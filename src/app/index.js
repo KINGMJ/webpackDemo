@@ -1,15 +1,17 @@
-import printMe from './print';
 import './assets/css/main.css';
-
-
+import './assets/css/ionicons-font.css';
+import Data from './test.json';
 window.onload = function () {
-    printMe();
     drawHtml();
+    readJson();
 };
 
 
 function drawHtml() {
     const container = document.getElementById('container');
-    container.innerText = "Hello";
-    container.className = "hello";
+    container.querySelector('p').innerText = "Hello";
+}
+
+function readJson() {
+    console.log(Data.name);
 }
