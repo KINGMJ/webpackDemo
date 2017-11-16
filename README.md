@@ -1,13 +1,11 @@
 # 【webpack快速上手】1.配置一个最基本的webpack项目
 
----
-
 > 本系列教程只作为基本的入门使用，不涉及到一些概念及原理。
 基于版本：![][1]
 
 ## Concepts（概念）
 
-webpack的四个核心概念为`Entry`、`Output`、`Loaders`和`Plugins`。下面通过使用它们来构建一个基本的应用
+webpack的四个核心概念为`Entry`、`Output`、`Loaders`和`Plugins`。下面通过使用它们来构建一个基本的应用  
 ![image.png-4kB][2]
 
 ## Getting Started
@@ -21,7 +19,7 @@ npm init -y
 npm install --save-dev webpack
 ```
 
-然后我们构建好项目的目录，类似像下面这样：
+然后我们构建好项目的目录，类似像下面这样：  
 ![image.png-26.6kB][3]
 
 webpack.config.js 为 webpack 的配置文件
@@ -196,14 +194,14 @@ function readJson() {
 运行脚本之后，可以看到 index.js 里面引入的资源都被打包到 dist 文件夹中 ， js 最终生成为 Output 里面配置的 bundle.js
 ![image.png-19.5kB][10]
 
-访问 index.html 可以看到最终的效果，样式、图片、字体都正常加载，控制台正常打印语句
-![image.png-354.5kB][11]
-![image.png-4.4kB][12]
+访问 index.html 可以看到最终的效果，样式、图片、字体都正常加载，控制台正常打印语句  
+![image.png-354.5kB][11]  
+![image.png-4.4kB][12]  
 
 有一个问题不知道大家发现没，最终生成的文件里是没有 css 文件的，那么样式是怎么出来的呢
 
-去查网页源代码，发现是在 `<style></style>` 标签里的
-![image.png-45.6kB][13]
+去查网页源代码，发现是在 `<style></style>` 标签里的  
+![image.png-45.6kB][13]  
 
 那么问题来了，生成环境我们是希望 css 作为一个独立的文件来进行管理，不然 bundle.js 会非常臃肿，那么我们需要将它抽离成真实的 css 文件。
 
