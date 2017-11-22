@@ -1,5 +1,8 @@
 # 【webpack快速上手】2. 使用less、sass进行css预处理
 
+> 本系列教程只作为基本的入门使用，不涉及到一些概念及原理。
+基于版本：![][6]
+
 在前端工程项目里，怎样编写和维护高质量的 css 文件是必须的，所以自然少不了 less 或 sass 这类 css 扩展语言，所以这篇文章主要介绍一下怎样通过 webpack 来配置 less 或 sass
 
 ## less
@@ -151,3 +154,4 @@ sass 配置 postcss 也是一样的，这里就不做介绍了，demo 里两种�
   [3]: https://github.com/postcss/postcss
   [4]: https://github.com/postcss/postcss-loader
   [5]: https://github.com/webpack-contrib/sass-loader
+  [6]: https://img.shields.io/npm/v/webpack.svg?label=webpack&style=flat-square&maxAge=3600.png
