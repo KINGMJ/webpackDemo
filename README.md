@@ -1,36 +1,153 @@
-# 【webpack快速上手】2. 多Entry配置多页面应用
+# 【webpack快速上手】2. 使用less、sass进行css预处理
 
-前面介绍通过配置 Entry 和 Output 可以指定一个入口 js 来管理项目的依赖，最终打包成 bundle.js 。 这种对于单页面应用是可行的，但对于多页面应用通常不同的页面需要引入不同的 js 。对于这种场景，我们就要配置多入口了。
+在前端工程项目里，怎样编写和维护高质量的 css 文件是必须的，所以自然少不了 less 或 sass 这类 css 扩展语言，所以这篇文章主要介绍一下怎样通过 webpack 来配置 less 或 sass
 
-## 多入口配置
+## less
 
-![image_1bv477m3e5e913701jht1eb410139.png-6.7kB][1]
+webpack 中使用 less 须用到 [less-loader][1] ， 它的配置十分简单
 
-可以看到，entry 是支持对象的写法的，我们指定 key 和 name 就可以了
+### 安装
+
+```
+npm install --save-dev less-loader less
+```
+
+### 配置
 
 **`webpack.config.js`**
 ```
-entry: {
-    page_one: './src/app/page_one.js',
-    page_two: './src/app/page_two.js',
-    page_three: './src/app/page_three.js'
+module: {
+    rules: [
+        {
+            test: /\.less$/,
+            use: [{
+                loader: "style-loader" // creates style nodes from JS strings
+            }, {
+                loader: "css-loader" // translates CSS into CommonJS
+            }, {
+                loader: "less-loader" // compiles Less to CSS
+            }]
+        }
+    ]
 }
 ```
+loader 必须按照 `style-loader`、`css-loader`、`less-loader`这样的顺序。别忘了安装 style-loader 和 css-loader
 
-同样的 Output 也要做出一些改变，我们需要为每个入口打包成一个单独的 js ，所以他们得有一个唯一的名字
+## sass
+
+webpack 中使用 sass 须用到 [sass-loader][5] ， 它的配置跟 less 是一样的，只是文件名和 使用的 loader 不一样
+
+### 安装
+
+```
+npm install sass-loader node-sass --save-dev
+```
+
+### 配置
 
 **`webpack.config.js`**
 ```
-output: {
-    filename: '[name].bundle.js',
-    path: path.resolve(__dirname, 'dist')
+module: {
+    rules: [
+        {
+            test: /\.scss$/,
+            use: [
+                {
+                    loader: 'style-loader'
+                },
+                {
+                    loader: 'css-loader'
+                },
+                {
+                    loader: 'sass-loader'
+                }]
+        }
+    ]
 }
 ```
 
-这里的`[name]`指代的就是 entry 里的 key 的名字，最终打包的 js 如下：
+## 配置 autoprefixer
 
-![image_1bv47uag6if61nkj1qbu1av128fm.png-8.2kB][2]
+[autoprefixer][2] 自动添加浏览器前缀，对开发这来说是一款不可或缺的工具。在 webpack2 之后像这种 css 后处理都是由 [postcss][3] 来处理的。 postcss 有点像一个插件平台，autoprefixer 只是其中的一个插件。
 
+我们在 webpack 中须借助 [postcss-loader][4] 来使用，它的配置有两种方式：你可以直接在 webpack 中配置它的 options 参数；或者新建一个 postcss.config.js 文件
 
-  [1]: http://static.zybuluo.com/Jerry-MEI/9nf6ha103jbjsvgippxqgzfn/image_1bv477m3e5e913701jht1eb410139.png
-  [2]: http://static.zybuluo.com/Jerry-MEI/rytrku4ja0h1vy5q9iwcu60t/image_1bv47uag6if61nkj1qbu1av128fm.png
+首先我们需要安装它：`npm i -D postcss-loader`
+
+### 在 webpack 中使用 options 参数
+
+**`webpack.config.js`**
+```
+module: {
+    rules: [
+        {
+            test: /\.less$/,
+            use: [
+                {
+                    loader: 'style-loader' // creates style nodes from JS strings
+                },
+                {
+                    loader: 'css-loader' // translates CSS into CommonJS
+                },
+                {
+                    loader: 'postcss-loader',
+                    options: {
+                        ident: 'postcss',
+                        plugins: (loader) => [
+                            require('autoprefixer')({browsers: 'last 2 versions'})
+                        ]
+                    }
+                },
+                {
+                    loader: 'less-loader' // compiles Less to CSS
+                }]
+        }
+    ]
+}
+```
+**注意：**
+
+- postcss-loader 的位置必须在 style-loader 和 css-loader 的后面，在 less 、sass  这些预处理器 loaders 的前面
+- 当使用`{Function}/require`时，options 里面必须加上一个标识符 ident 
+
+### 新增一个 postcss.config.js 配置文件
+
+**`webpack.config.js`**
+```
+module: {
+    rules: [
+        {
+            test: /\.less$/,
+            use: [
+                {
+                    loader: 'style-loader' // creates style nodes from JS strings
+                },
+                {
+                    loader: 'css-loader' // translates CSS into CommonJS
+                },
+                {
+                    loader: 'postcss-loader'
+                },
+                {
+                    loader: 'less-loader' // compiles Less to CSS
+                }]
+        }
+    ]
+}
+```
+**`postcss.config.js`**
+```
+module.exports = {
+    plugins: {
+        'autoprefixer': {browsers: 'last 2 versions'}
+    }
+};
+```
+
+sass 配置 postcss 也是一样的，这里就不做介绍了，demo 里两种都实现了，可以自己去参考一下
+
+  [1]: https://github.com/webpack-contrib/less-loader
+  [2]: https://github.com/postcss/autoprefixer
+  [3]: https://github.com/postcss/postcss
+  [4]: https://github.com/postcss/postcss-loader
+  [5]: https://github.com/webpack-contrib/sass-loader
