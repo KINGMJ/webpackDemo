@@ -1,0 +1,9 @@
+@import "variables";
+
+.sass-loader {
+  color: $font-color;
+  background-color: $theme-color;
+  padding: 15px;
+  margin: 15px;
+  display: flex;
+}
