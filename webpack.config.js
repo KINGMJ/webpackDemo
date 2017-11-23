@@ -1,5 +1,6 @@
 const path = require('path');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
+const ExtractTextPlugin = require("extract-text-webpack-plugin");
 
 const config = {
     //入口文件
@@ -13,43 +14,24 @@ const config = {
         rules: [
             {
                 test: /\.less$/,
-                use: [
-                    {
-                        loader: 'style-loader' // creates style nodes from JS strings
-                    },
-                    {
-                        loader: 'css-loader' // translates CSS into CommonJS
-                    },
-                    {
-                        loader: 'postcss-loader'
-                    },
-                    {
-                        loader: 'less-loader' // compiles Less to CSS
-                    }]
+                use: ExtractTextPlugin.extract({
+                    fallback: 'style-loader',
+                    use: ['css-loader', 'postcss-loader', 'less-loader']
+                })
             },
             {
                 test: /\.scss$/,
-                use: [
-                    {
-                        loader: 'style-loader'
-                    },
-                    {
-                        loader: 'css-loader'
-                    },
-                    {
-                        loader: 'postcss-loader'
-                    },
-                    {
-                        loader: 'sass-loader'
-                    }]
+                use: ExtractTextPlugin.extract({
+                    use: ['css-loader', 'postcss-loader', 'sass-loader']
+                })
             }
         ]
     },
-
     plugins: [
         new CopyWebpackPlugin([
             {from: './src/index.html', to: '.'}
-        ])
+        ]),
+        new ExtractTextPlugin("styles.css")
     ]
 };
 
