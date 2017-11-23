@@ -49,6 +49,7 @@ plugins: [
 ```
 
 这里的 filename 不仅可以指定文件名，还可以指定文件夹名。最终在 dist 文件夹里生成一个 css 文件夹，里面有 `page_one.css`和`page_two.css`
+
   [1]: https://img.shields.io/npm/v/webpack.svg?label=webpack&style=flat-square&maxAge=3600.png
   [2]: http://static.zybuluo.com/Jerry-MEI/9nf6ha103jbjsvgippxqgzfn/image_1bv477m3e5e913701jht1eb410139.png
   [3]: http://static.zybuluo.com/Jerry-MEI/rytrku4ja0h1vy5q9iwcu60t/image_1bv47uag6if61nkj1qbu1av128fm.png
